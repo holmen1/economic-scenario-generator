@@ -2,10 +2,10 @@
 ## From A to Z
 
 
-![Alt Text](https://github.com/holmen1/economic-scenario-generator/blob/holmen1/new/images/StockSimulation.JPG)
+![Alt Text](https://github.com/holmen1/economic-scenario-generator/blob/holmen1/master/images/StockSimulation.JPG)
 
 Using Geometric Brownian Motion to model stocks and Ornstein–Uhlenbeck for interest rates.
-Driving Brownian process is generated from correlation-matrix that need not be wellconditioned since truncated Singular Value Decomposition is used.
+Driving Brownian process is generated from correlation-matrix that need not be wellconditioned since truncated singular value decomposition is used.
 Interdependence between paths is captured with Gaussian copula, which is easily modified to model more realistic interdependencies.
 
 
@@ -27,7 +27,7 @@ Copula https://en.wikipedia.org/wiki/Copula_(probability_theory)
 1. timeseries
 
     Preprocessing
-    
+
     SQL -> json -> pandas -> numpy array
 
 2. calibration
