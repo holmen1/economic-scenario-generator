@@ -27,6 +27,7 @@ Copula https://en.wikipedia.org/wiki/Copula_(probability_theory)
 1. timeseries
 
     Preprocessing
+    
     SQL -> json -> pandas -> numpy array
 
 2. calibration
@@ -37,12 +38,12 @@ Copula https://en.wikipedia.org/wiki/Copula_(probability_theory)
 
     Plot realizations
 
-4. verification
+4. validation
 
     Run calibration step on simulations
 
 
-## Suggested futher development
+## Suggested extensions
 
 * Reallocation s<sub>t+1</sub> += &mu;(s<sub>t</sub> + s<sub>r</sub>)dt + &sigma;(s<sub>t</sub> + s<sub>r</sub>)db
 * Black-Litterman
