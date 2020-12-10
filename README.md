@@ -1,8 +1,8 @@
-# economic-scenario-generator
+# Economic Scenario Generator
 ## From A to Z
 
 
-![Alt Text](https://github.com/holmen1/economic-scenario-generator/blob/holmen1/master/images/StockSimulation.JPG)
+![error](https://github.com/holmen1/economic-scenario-generator/blob/master/images/StockSimulation.JPG)
 
 Using Geometric Brownian Motion to model stocks and Ornstein–Uhlenbeck for interest rates.
 Driving Brownian process is generated from correlation-matrix that need not be wellconditioned since truncated singular value decomposition is used.
