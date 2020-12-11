@@ -9,9 +9,7 @@ Driving Brownian process is generated from correlation-matrix that need not be w
 Interdependence between paths is captured with Gaussian copula, which is easily modified to model more realistic interdependencies.
 
 
-## References
-Geometric Brownian Motion https://en.wikipedia.org/wiki/Geometric_Brownian_motion
-
+### References
 Ornstein–Uhlenbeck process https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process
 
 Singular value decomposition https://en.wikipedia.org/wiki/Singular_value_decomposition
@@ -19,7 +17,7 @@ Singular value decomposition https://en.wikipedia.org/wiki/Singular_value_decomp
 Copula https://en.wikipedia.org/wiki/Copula_(probability_theory)
 
 
-## Jupyter notebooks
+### Jupyter notebooks
 0. demonstration
 
     Qualitative plots of stock and rate
