@@ -12,6 +12,7 @@ from scipy.stats import norm
 
 class NoiseGenerator(object):
     """
+    Modelling the distribution of random vectors by estimating marginals and copulae separately
     """
 
     def __init__(self, seed=0):
@@ -23,7 +24,7 @@ class NoiseGenerator(object):
         if seed != 0:
             random.seed(seed)
 
-    def brown_steps(self, corr, steps):
+    def normal_steps(self, Corr, steps):
         """
         Generates [X1, X2,...,Xn]
         where X ~ N(0,cor^0.5)
@@ -34,15 +35,14 @@ class NoiseGenerator(object):
         """
 
         # C ~ U(0,1)
-        C = self.copula(corr, steps)
+        C = self.copula(Corr, steps)
         dB = norm.ppf(C)
 
         return dB
 
     def copula(self, Corr, n):
         """
-        Gaussian Copula generator.
-        TO DO: Non-Gaussian
+        Gaussian Copula generator
 
         Inputs:
         - Corr: Correlation matrix
