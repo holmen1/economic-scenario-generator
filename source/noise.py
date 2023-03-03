@@ -2,13 +2,14 @@
 """
 Created on Sun Jun 30 16:23:06 2019
 
-Modified Jun 2020
+Modified June 2020
 
 @author: holmen1
 """
 from numpy import linalg as la
 from numpy import sqrt, diag, max, where, random
 from scipy.stats import norm
+
 
 class NoiseGenerator(object):
     """

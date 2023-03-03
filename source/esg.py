@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun 30 16:23:06 2019
+Created June 2019
 
-@author: mhoc
+@author: holmen1
 """
 import numpy as np
 
@@ -43,15 +43,17 @@ class EconomicScenarioGenerator(object):
         - partion: Integer Parts of a year, 252 => daily
         """
         scaled_sigma = self.sigma / np.sqrt(partition)
-        
-        dt = 1/partition
+
+        dt = 1 / partition
         S = np.zeros((N, len(self.stock_id), steps))
         R = np.zeros((N, len(self.rate_id), steps))
         for n in np.arange(N):
-            dB = self.Noise[:,n*steps:(n+1)*steps]
-            S[n] = self.gbm(self.s0[self.stock_id], self.mu[self.stock_id], scaled_sigma[self.stock_id], dt, dB[self.stock_id,1:])
-            R[n] = self.vasicek(self.s0[self.rate_id], self.a[self.rate_id], self.mu[self.rate_id], scaled_sigma[self.rate_id], dt, dB[self.rate_id,1:])
-        return (S,R)
+            dB = self.Noise[:, n * steps:(n + 1) * steps]
+            S[n] = self.gbm(self.s0[self.stock_id], self.mu[self.stock_id], scaled_sigma[self.stock_id], dt,
+                            dB[self.stock_id, 1:])
+            R[n] = self.vasicek(self.s0[self.rate_id], self.a[self.rate_id], self.mu[self.rate_id],
+                                scaled_sigma[self.rate_id], dt, dB[self.rate_id, 1:])
+        return (S, R)
 
     def gbm(self, s0, mu, sigma, dt, dB):
         """
@@ -59,14 +61,14 @@ class EconomicScenarioGenerator(object):
         """
 
         s = s0.copy()
-        S = np.zeros((dB.shape[0],dB.shape[1]+1))
-        S[:,0], n = s, 1
+        S = np.zeros((dB.shape[0], dB.shape[1] + 1))
+        S[:, 0], n = s, 1
 
         for db in dB.T:
-            s += mu*s*dt + sigma*s*db
-            S[:,n] = s
+            s += mu * s * dt + sigma * s * db
+            S[:, n] = s
             n += 1
-            
+
         return S
 
     def vasicek(self, r0, a, mu, sigma, dt, dB):
@@ -74,14 +76,12 @@ class EconomicScenarioGenerator(object):
         Mean reversion rate model
         """
         r = r0.copy()
-        R = np.zeros((dB.shape[0],dB.shape[1]+1))
-        R[:,0], n = r, 1
+        R = np.zeros((dB.shape[0], dB.shape[1] + 1))
+        R[:, 0], n = r, 1
 
         for db in dB.T:
-            r += a*(mu - r)*dt + sigma*db
-            R[:,n] = r
+            r += a * (mu - r) * dt + sigma * db
+            R[:, n] = r
             n += 1
-            
+
         return R
-
-
