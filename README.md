@@ -46,3 +46,13 @@ Copula https://en.wikipedia.org/wiki/Copula_(probability_theory)
 * Reallocation s<sub>t+1</sub> += &mu;(s<sub>t</sub> + s<sub>r</sub>)dt + &sigma;(s<sub>t</sub> + s<sub>r</sub>)db
 * Black-Litterman
 * Non-Gaussian Copula
+
+## TODO
+
+* [ ] Add tests
+* [ ] RequestModel parameter validation
+* [ ] Add documentation
+* [ ] Add logging
+* [ ] Add GitHub Actions
+* [ ] Add API
+* [ ] Containerize
