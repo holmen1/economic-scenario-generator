@@ -8,14 +8,16 @@ import numpy as np
 
 
 class RequestModel(BaseModel):
-    s0: List[float]  # initial value
-    a: List[float]  # speed of reversion (rates)
-    mu: List[float]  # drift (stocks), long term mean level (rates)
+    N: int              # simulations
+    T: int              # years
+    s0: List[float]     # initial value
+    a: List[float]      # speed of reversion (rates)
+    mu: List[float]     # drift (stocks), long term mean level (rates)
     sigma: List[float]  # volatility
     corrmatrix: List[List[float]]
 
     def to_numpy(self):
-        return map(np.array, [self.s0, self.a, self.mu, self.sigma, self.corrmatrix])
+        return map(np.array, (self.N, self.T, self.s0, self.a, self.mu, self.sigma, self.corrmatrix))
 
 
 class ResponseModel(BaseModel):
@@ -37,11 +39,9 @@ async def root():
 
 @app.post("/api/scenarios", status_code=200)
 async def create_scenarios(req: RequestModel, response: Response) -> ResponseModel:
-    s0, a, mu, sigma, corrmatrix = req.to_numpy()
+    N, T, s0, a, mu, sigma, corrmatrix = req.to_numpy()
 
-    N = 10  # simulations
     interval = 12  # monthly
-    T = 5  # years
     steps = interval * T
 
     NG = NoiseGenerator()
