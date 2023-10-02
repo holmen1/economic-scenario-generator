@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+import time
 from logging.handlers import RotatingFileHandler
 from fastapi import FastAPI, Response, status
 from typing import List
@@ -71,11 +72,17 @@ async def create_scenarios(req: RequestModel, response: Response) -> ResponseMod
     steps = interval * T
 
     NG = NoiseGenerator()
+    tic = time.perf_counter()
     dB = NG.normal_steps(corrmatrix, N * steps)
-    ESG = EconomicScenarioGenerator(s0, a, mu, sigma, dB)
+    toc = time.perf_counter()
+    logger.info(f"Generated {N * steps} steps noise  {toc - tic:0.4f} seconds")
 
+    ESG = EconomicScenarioGenerator(s0, a, mu, sigma, dB)
+    tic = time.perf_counter()
     # (N, 2, steps)
     EQ, IR = ESG.get_scenarios(N, steps, interval)
+    toc = time.perf_counter()
+    logger.info(f"Generated {N * steps} scenarios in {toc - tic:0.4f} seconds")
 
     eq_list = EQ.tolist()
     ir_list = IR.tolist()
