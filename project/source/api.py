@@ -1,3 +1,4 @@
+import multiprocessing as mp
 import numpy as np
 import logging
 import time
@@ -14,13 +15,13 @@ def configure_logging():
 
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
-    file_handler = RotatingFileHandler('logs/api.log', maxBytes=100000, backupCount=1)
+    file_handler = RotatingFileHandler('./api.log', maxBytes=100000, backupCount=1)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
     uvicorn_logger = logging.getLogger("uvicorn")
     uvicorn_logger.setLevel(logging.DEBUG)
-    uvicorn_file_handler = RotatingFileHandler('logs/api.log', maxBytes=100000, backupCount=1)
+    uvicorn_file_handler = RotatingFileHandler('./api.log', maxBytes=100000, backupCount=1)
     uvicorn_file_handler.setFormatter(formatter)
     uvicorn_logger.addHandler(uvicorn_file_handler)
     stream_handler = logging.StreamHandler()
@@ -48,25 +49,27 @@ class ResponseModel(BaseModel):
     vasicek: List[List[List[float]]]  # mean reversion with additive noise
 
 
-logger, uvicorn_logger = configure_logging()
+log, uvicorn_log = configure_logging()
 
 app = FastAPI(
     title="economic-scenario-generator",
     description="A RESTful API to generate",
     version="1.5.1",
-    logger=uvicorn_logger
+    logger=uvicorn_log
 )
 
 
 @app.get("/")
 async def root():
-    logger.info("Hello!")
+    log.info("Hello!")
     return {"message": "Hello from ESG!"}
 
 
 @app.post("/api/scenarios", status_code=200)
 async def create_scenarios(req: RequestModel, response: Response) -> ResponseModel:
     N, T, s0, a, mu, sigma, corrmatrix = req.to_numpy()
+    num_processes = mp.cpu_count()
+    log.info(f"Number of processes: {num_processes}")
 
     interval = 12  # monthly
     steps = interval * T
@@ -75,14 +78,14 @@ async def create_scenarios(req: RequestModel, response: Response) -> ResponseMod
     tic = time.perf_counter()
     dB = NG.normal_steps(corrmatrix, N * steps)
     toc = time.perf_counter()
-    logger.info(f"Generated {N * steps} steps noise  {toc - tic:0.4f} seconds")
+    log.info(f"Generated {N * steps} steps noise  {toc - tic:0.4f} seconds")
 
     ESG = EconomicScenarioGenerator(s0, a, mu, sigma, dB)
     tic = time.perf_counter()
     # (N, 2, steps)
     EQ, IR = ESG.get_scenarios(N, steps, interval)
     toc = time.perf_counter()
-    logger.info(f"Generated {N * steps} scenarios in {toc - tic:0.4f} seconds")
+    log.info(f"Generated {N} scenarios in {toc - tic:0.4f} seconds")
 
     eq_list = EQ.tolist()
     ir_list = IR.tolist()
@@ -90,3 +93,4 @@ async def create_scenarios(req: RequestModel, response: Response) -> ResponseMod
         response.status_code = status.HTTP_201_CREATED
 
     return ResponseModel(gbm=eq_list, vasicek=ir_list)
+

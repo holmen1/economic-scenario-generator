@@ -36,6 +36,8 @@ class TestApi(unittest.TestCase):
         self.assertEqual(len(response.json()["vasicek"][0]), 1)
         self.assertEqual(len(response.json()["vasicek"][0][0]), 60)
 
+
+
     def test_final_gbm_mean(self):
         payload = {
             "N": 1000,
