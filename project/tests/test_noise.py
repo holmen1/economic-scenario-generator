@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from source.noise import NoiseGenerator
+from project.source.noise import NoiseGenerator
 
 
 class TestNoise(unittest.TestCase):

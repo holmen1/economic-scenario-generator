@@ -69,8 +69,8 @@ class EconomicScenarioGenerator(object):
             inputs.append((start, end - start, steps, partition))
 
         # create a pool for multiprocessing
-        pool = mp.Pool(processes=num_processes)
-        result = pool.starmap(self.get_scenarios_partial, inputs)
+        with mp.Pool(processes=num_processes) as pool:
+            result = pool.starmap(self.get_scenarios_partial, inputs)
 
         S = np.concatenate([r[0] for r in result], axis=0)
         R = np.concatenate([r[1] for r in result], axis=0)
