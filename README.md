@@ -45,7 +45,21 @@ Returns 2 samples each of stock and interest rate paths with correlation 0.2
     [
       [0.03,0.03175193924876177,0.029062422938180357,0.028804540622892057,0.030073175655091995,0.02909048927411122,0.030467152357563074,0.02833432423517005,0.027626317877791372,0.02643795243414647,0.026070559942345636,0.025927968228109975]
     ]
-  ]
+  ],
+  "processors": 12,
+  "duration": 0.04755851699997038
+}
+```
+
+```bash
+curl -X POST "http://localhost:8000/api/scenarios" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"samples\":2000,\"years\":5,\"s0\":[224.0,0.03],\"a\":[0.0,0.09],\"mu\":[0.094,-0.007],\"sigma\":[0.16,0.007],\"corrmatrix\":[[1.0,0.2],[0.2,1.0]]}" 
+```
+Time to run 2000 monthly samples for 5 years on 12 processors is 0.37 seconds
+```json
+{
+  [...],
+  "processors":12,
+  "time":0.3729823819999183
 }
 ```
 

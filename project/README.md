@@ -6,7 +6,7 @@
 
 
 ```bash
-docker build -t holmen1/economic-scenario-generator-api
+docker build -t holmen1/economic-scenario-generator-api .
 ```
 
 ```bash
@@ -29,14 +29,16 @@ python -m unittest discover -v project/tests
 ```
 
 ```bash
-test_final_gbm_mean (test_api.TestApi.test_final_gbm_mean) ... ok
-test_get_root_message (test_api.TestApi.test_get_root_message) ... ok
-test_response_dimensions (test_api.TestApi.test_response_dimensions) ... ok
-test_left_factorize (test_noise.TestNoise.test_left_factorize) ... ok
-test_normal_steps (test_noise.TestNoise.test_normal_steps) ... ok
+test_final_gbm_mean (test_api.TestApi) ... ok
+test_get_ping (test_api.TestApi) ... ok
+test_response_dimensions (test_api.TestApi) ... ok
+test_left_factorize (test_noise.TestNoise) ... ok
+test_normal_step_correlation (test_noise.TestNoise) ... ok
+test_normal_step_mean_std (test_noise.TestNoise) ... ok
+test_normal_step_normality (test_noise.TestNoise) ... ok
 
 ----------------------------------------------------------------------
-Ran 5 tests in 1.773s
+Ran 7 tests in 0.911s
 
 OK
 ```
