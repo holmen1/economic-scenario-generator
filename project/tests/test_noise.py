@@ -11,6 +11,11 @@ class TestNoise(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.NG = NoiseGenerator()
+        cls.Corr = np.array([[1.0, 1.0, 0.5, -0.8],
+                         [1.0, 1.0, 0.5, -0.8],
+                         [0.5, 0.5, 1.0, 0.0],
+                         [-0.8, -0.8, 0.0, 1.0]])
+        cls.dB = cls.NG.normal_steps(cls.Corr, 100000)
 
     def test_left_factorize(self):
         A = np.array([[1, 0.5, 0.2], [0.5, 1, 0.3], [0.2, 0.3, 1]])
@@ -18,30 +23,16 @@ class TestNoise(unittest.TestCase):
         self.assertTrue(np.allclose(A, B @ B.T))
 
     def test_normal_step_correlation(self):
-        Corr = np.array([[1.0, 1.0, 0.5, -0.8],
-                         [1.0, 1.0, 0.5, -0.8],
-                         [0.5, 0.5, 1.0, 0.0],
-                         [-0.8, -0.8, 0.0, 1.0]])
-        dB = self.NG.normal_steps(Corr, 1000000)
-        self.assertTrue(np.allclose(np.corrcoef(dB), Corr, atol=0.01))
+        self.assertTrue(np.allclose(np.corrcoef(self.dB), self.Corr, atol=0.01))
 
     def test_normal_step_mean_std(self):
-        Corr = np.array([[1.0, 1.0, 0.5, -0.8],
-                         [1.0, 1.0, 0.5, -0.8],
-                         [0.5, 0.5, 1.0, 0.0],
-                         [-0.8, -0.8, 0.0, 1.0]])
-        dB = self.NG.normal_steps(Corr, 10000)
-        self.assertTrue(np.allclose(np.mean(dB, axis=1), 0, atol=0.04))
-        self.assertTrue(np.allclose(np.std(dB, axis=1), 1, atol=0.01))
+        self.assertTrue(np.allclose(np.mean(self.dB, axis=1), 0, atol=0.04))
+        self.assertTrue(np.allclose(np.std(self.dB, axis=1), 1, atol=0.01))
 
     def test_normal_step_normality(self):
-        Corr = np.array([[1.0, 1.0, 0.5, -0.8],
-                         [1.0, 1.0, 0.5, -0.8],
-                         [0.5, 0.5, 1.0, 0.0],
-                         [-0.8, -0.8, 0.0, 1.0]])
-        dB = self.NG.normal_steps(Corr, 1000)
-
-        for db in dB:
+        # Shapiro-Wilk test for normality
+        # N < 5000 s.t. p-value is not too small
+        for db in self.dB[:, :4000]:
             _, p = shapiro(db)
             self.assertGreater(p, 0.05)
 

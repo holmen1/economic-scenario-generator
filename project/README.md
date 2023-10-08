@@ -38,7 +38,7 @@ test_normal_step_mean_std (test_noise.TestNoise) ... ok
 test_normal_step_normality (test_noise.TestNoise) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 0.911s
+Ran 7 tests in 0.514s
 
 OK
 ```
