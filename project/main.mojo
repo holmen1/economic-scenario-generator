@@ -4,15 +4,19 @@ from python import Python
 
 
 fn main() raises:
+    let T = 10
+    let db = python_noise(T)
+
+    plot(db)
+
+fn python_noise(years: Int) raises -> PythonObject:
     let np = Python.import_module("numpy")
     Python.add_to_path("source/")
-    #let setup = Python.import_module("setup")
-    #setup.ensure_package_installed("scipy")
-    let noise = Python.import_module("noise")
+    let noise: PythonObject = Python.import_module("noise")
     let noise_generator = noise.NoiseGenerator()
     let N = 100 # simulations
     let interval = 12 # monthly
-    let T = 15 # years
+    let T = years
     let steps = interval * T
 
     let s0 = np.array([224.0, 234.0, 0.03]) # initial value
@@ -23,9 +27,7 @@ fn main() raises:
 
     let dB = noise_generator.normal_steps(corrmatrix, N * steps)
     print(dB.shape)
-
-    plot(dB)
-
+    return dB
 
 def plot(db: PythonObject) -> None:
     let plt = Python.import_module("matplotlib.pyplot")
