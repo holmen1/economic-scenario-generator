@@ -6,6 +6,9 @@ Modified June 2020
 
 @author: holmen1
 """
+import check_mod
+check_mod.install_if_missing("numpy")
+check_mod.install_if_missing("scipy")
 from numpy import linalg as la
 from numpy import sqrt, diag, max, where, random
 from scipy.stats import norm
